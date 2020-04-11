@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29709.97
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EmailComAnexo", "EmailComAnexo\EmailComAnexo.csproj", "{698FD0C7-1955-4667-91C4-C0A70EBFDC70}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{698FD0C7-1955-4667-91C4-C0A70EBFDC70}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{698FD0C7-1955-4667-91C4-C0A70EBFDC70}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{698FD0C7-1955-4667-91C4-C0A70EBFDC70}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{698FD0C7-1955-4667-91C4-C0A70EBFDC70}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {BDB4831E-A9C1-4639-AADF-98CEA76A7808}
+	EndGlobalSection
+EndGlobal

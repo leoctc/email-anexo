@@ -1,0 +1,33 @@
+﻿@model EmailComAnexo.Models.ModeloEmail
+
+@{
+    ViewBag.Title = "Home Page";
+}
+
+<div class="jumbotron">
+    <h1>Envio de email com anexo</h1>
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        <h2>Preencha os dados:</h2>
+    </div>
+    @using (Html.BeginForm("EnviarEmail", "Home", FormMethod.Post, new { enctype = "multipart/form-data" }))
+    {
+
+        <div class="col-md-12">
+            <label for="txtNome">Nome</label>
+            @Html.EditorFor(model => model.Nome)
+        </div>
+
+        <div class="col-md-12">
+            <label for="anexos">Faça o upload de arquivo(s) :</label>
+            <input type="file" id="Anexos" name="Anexos" multiple />
+        </div>
+        <br />
+        <br />
+
+        <input type="submit" id="btnEnviar" value="Enviar" />
+    }
+</div>
+
