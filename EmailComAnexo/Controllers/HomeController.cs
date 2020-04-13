@@ -1,7 +1,6 @@
 ﻿using EmailComAnexo.Models;
 using EmailComAnexo.Utils;
 using System.Collections.Generic;
-using System.IO;
 using System.Web.Mvc;
 
 namespace EmailComAnexo.Controllers
@@ -42,7 +41,8 @@ namespace EmailComAnexo.Controllers
                     De = "leonardothebald@gmail.com",
                     Para = "leonardothebald@gmail.com",
                     Corpo = $"Nome: {m.Nome}",
-                    Anexos = anexos
+                    Anexos = anexos,
+                    UseTemplate = true
                 };
 
                 sender.Send(mail);

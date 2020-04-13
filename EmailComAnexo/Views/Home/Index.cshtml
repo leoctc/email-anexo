@@ -1,33 +1,96 @@
 ﻿@model EmailComAnexo.Models.ModeloEmail
 
 @{
-    ViewBag.Title = "Home Page";
+    ViewBag.Title = "Envio de e-mail";
 }
 
-<div class="jumbotron">
-    <h1>Envio de email com anexo</h1>
-</div>
-
 <div class="row">
-    <div class="col-md-12">
-        <h2>Preencha os dados:</h2>
+    <div class="col-sm-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h1>@ViewBag.Title</h1>
+            </div>
+            <div class="panel-body">
+
+                @using (Html.BeginForm("EnviarEmail", "Home", FormMethod.Post, new { enctype = "multipart/form-data" }))
+                {
+                    <div class="form-group">
+                        <div class="col-sm-12">
+                            <label class="control-label" for="txtNome">Nome</label>
+                            @Html.EditorFor(model => model.Nome, new { htmlAttributes = new { @class = "form-control col-sm-12" } })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-sm-12">
+                            <label class="control-label" for="Anexos">Anexar arquivo(s)</label>
+                            <input type="file" class="form-control col-sm-9" id="Anexos" name="Anexos" accept=".jpg,.png,.pdf,.doc,.docx" multiple />
+                        </div>
+                    </div>
+
+
+                    @*<div class="form-group">
+                            <div class="col-sm-12">
+                                <div class="input-group mb-3">
+                                    <div class="custom-file">
+                                        <label class="control-label" for="Anexos">Anexar arquivo(s)</label>
+                                        <input type="file" class="custom-file-input" id="Anexos" name="Anexos" accept=".jpg,.png,.pdf,.doc,.docx" multiple />
+                                        <label class="custom-file-label" for="Anexos">Escolher arquivo(s)</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>*@
+
+                    <div class="form-group btn-group-sm pull-right">
+                        <div class="col-sm-12">
+                            <label></label>
+                            <input class="btn btn-success" type="submit" id="btnEnviar" value="Enviar" />
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
     </div>
-    @using (Html.BeginForm("EnviarEmail", "Home", FormMethod.Post, new { enctype = "multipart/form-data" }))
-    {
-
-        <div class="col-md-12">
-            <label for="txtNome">Nome</label>
-            @Html.EditorFor(model => model.Nome)
-        </div>
-
-        <div class="col-md-12">
-            <label for="anexos">Faça o upload de arquivo(s) :</label>
-            <input type="file" id="Anexos" name="Anexos" multiple />
-        </div>
-        <br />
-        <br />
-
-        <input type="submit" id="btnEnviar" value="Enviar" />
-    }
 </div>
+
+
+@section Scripts{
+    <script>
+        $(document).ready(function () {
+
+            $('input#Anexos').change(function () {
+
+                validarInputFile($(this));
+            });
+        });
+
+        function validarInputFile(input) {
+
+            var files = input[0].files;
+            var tamanhoTotal = 0;
+            var maxSizeKb = 25600; //25mb
+
+            for (i = 0; i < files.length; i++) {
+                tamanhoTotal += files[i].size / 1000; //kb
+            }
+
+            // somente 5 arquivos
+            if (files.length > 5) {
+                alert("Você só pode selecionar 5 arquivos.");
+                $('input#Anexos').val('');
+            }
+
+            // verifica tamanho dos arquivos selecionados
+            if (tamanhoTotal > maxSizeKb) {
+                alert("O tamanho excedeu o limite.");
+                $('input#Anexos').val('');
+            }
+            else if (tamanhoTotal == 0) {
+                alert("Você não selecionou arquivo(s).");
+            }
+        }
+
+    </script>
+}
+
 

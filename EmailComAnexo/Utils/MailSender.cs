@@ -173,10 +173,12 @@ namespace EmailComAnexo.Utils
             if (string.IsNullOrEmpty(this.De)) this.De = "leonardothebald@gmail.com";
             if (string.IsNullOrEmpty(this.Smtp)) this.Smtp = "smtp.gmail.com";
             if (this.Porta < 1) this.Porta = 587;
+            Anexos = new List<Anexo>();
+
+            //se utiliza ssl credenciais
             this.Ssl = true;
             this.Usuario = "leonardothebald@gmail.com";
             this.Senha = "1qaz234wer";
-            Anexos = new List<Anexo>();
         }
 
         #region Conteúdo
@@ -185,7 +187,6 @@ namespace EmailComAnexo.Utils
         public string Cc { get; set; }
         public string Assunto { get; set; }
         public string Corpo { get; set; }
-        //public Anexo Anexo { get; set; }
         public IEnumerable<Anexo> Anexos { get; set; }
         public string Logo { get; set; }
         public bool UseTemplate { get; set; }
