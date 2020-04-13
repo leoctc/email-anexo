@@ -28,6 +28,9 @@
                         </div>
                     </div>
 
+                    <div id="lstFiles" class="col-sm-6">
+
+                    </div>
 
                     @*<div class="form-group">
                             <div class="col-sm-12">
@@ -61,6 +64,8 @@
             $('input#Anexos').change(function () {
 
                 validarInputFile($(this));
+
+                listFiles($(this));
             });
         });
 
@@ -87,6 +92,26 @@
             }
             else if (tamanhoTotal == 0) {
                 alert("Você não selecionou arquivo(s).");
+            }
+        }
+
+        function listFiles(input) {
+
+            var files = input[0].files;
+            var lista = '';
+
+            $('#lstFiles').html('');
+
+            if (files.length > 0) {
+                for (i = 0; i < files.length; i++) {
+
+                    lista += '<dd>' + files[i].name + '</dd>';
+
+                }
+
+                var htmlList = '<h4>Selecionados:</h4><dt>' + lista + '</dt>';
+
+                $('#lstFiles').html(htmlList);
             }
         }
 
