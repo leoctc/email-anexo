@@ -4,6 +4,14 @@
     ViewBag.Title = "Envio de e-mail";
 }
 
+
+<style>
+    #lstFiles {
+        margin-left: 16px;
+    }
+</style>
+
+
 <div class="row">
     <div class="col-sm-12">
         <div class="panel panel-default">
@@ -23,26 +31,16 @@
 
                     <div class="form-group">
                         <div class="col-sm-12">
-                            <label class="control-label" for="Anexos">Anexar arquivo(s)</label>
-                            <input type="file" class="form-control col-sm-9" id="Anexos" name="Anexos" accept=".jpg,.png,.pdf,.doc,.docx" multiple />
+                            <div class="input-group mb-3">
+                                <div class="custom-file">
+                                    <input type="file" class="custom-file-input" id="Anexos" name="Anexos" accept=".jpg,.png,.pdf,.doc,.docx" multiple />
+                                    <label class="custom-file-label" for="Anexos">Escolher arquivo(s)</label>
+                                </div>
+                            </div>
                         </div>
                     </div>
 
-                    <div id="lstFiles" class="col-sm-6">
-
-                    </div>
-
-                    @*<div class="form-group">
-                            <div class="col-sm-12">
-                                <div class="input-group mb-3">
-                                    <div class="custom-file">
-                                        <label class="control-label" for="Anexos">Anexar arquivo(s)</label>
-                                        <input type="file" class="custom-file-input" id="Anexos" name="Anexos" accept=".jpg,.png,.pdf,.doc,.docx" multiple />
-                                        <label class="custom-file-label" for="Anexos">Escolher arquivo(s)</label>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>*@
+                    <div id="lstFiles"></div>
 
                     <div class="form-group btn-group-sm pull-right">
                         <div class="col-sm-12">
@@ -90,9 +88,7 @@
                 alert("O tamanho excedeu o limite.");
                 $('input#Anexos').val('');
             }
-            else if (tamanhoTotal == 0) {
-                alert("Você não selecionou arquivo(s).");
-            }
+
         }
 
         function listFiles(input) {
@@ -103,15 +99,39 @@
             $('#lstFiles').html('');
 
             if (files.length > 0) {
+
                 for (i = 0; i < files.length; i++) {
 
-                    lista += '<dd>' + files[i].name + '</dd>';
+                    var ext = files[i].name.split('.').pop();
+                    var icone = '';
+
+                    if (ext == 'doc' || ext == 'docx') {
+                        icone = 'fa fa-file-word-o';
+                    }
+                    else if (ext == 'pdf') {
+                        icone = 'fa fa-file-pdf-o';
+                    }
+                    else if (ext == 'jpg' || ext == 'jpeg' || ext == 'png') {
+                        icone = 'fa fa-file-image-o';
+                    }
+                    else {
+                        alert('Existe um arquivo com extensão não permitida.');
+                        $('label.custom-file-label').html('Escolher arquivo(s)');
+                        return false;
+                    }
+
+                    lista += '<dd><i class="' + icone + '" aria-hidden="true"></i> ' + files[i].name + '</dd>';
 
                 }
 
-                var htmlList = '<h4>Selecionados:</h4><dt>' + lista + '</dt>';
+                var htmlList = '<dt>' + lista + '</dt>';
 
                 $('#lstFiles').html(htmlList);
+
+                $('label.custom-file-label').html(files.length + ' arquivo(s) selecionado(s).');
+            }
+            else {
+                $('label.custom-file-label').html('Escolher arquivo(s)');
             }
         }
 
