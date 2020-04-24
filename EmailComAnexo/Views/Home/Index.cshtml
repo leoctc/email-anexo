@@ -20,12 +20,12 @@
             </div>
             <div class="panel-body">
 
-                @using (Html.BeginForm("EnviarEmail", "Home", FormMethod.Post, new { enctype = "multipart/form-data" }))
+                @using (Html.BeginForm("EnviarEmail", "Home", FormMethod.Post, new { @id = "formFiles", enctype = "multipart/form-data" }))
                 {
                     <div class="form-group">
                         <div class="col-sm-12">
                             <label class="control-label" for="txtNome">Nome</label>
-                            @Html.EditorFor(model => model.Nome, new { htmlAttributes = new { @class = "form-control col-sm-12" } })
+                            @Html.EditorFor(model => model.Nome, new { htmlAttributes = new {@class = "form-control col-sm-12" } })
                         </div>
                     </div>
 
@@ -33,7 +33,7 @@
                         <div class="col-sm-12">
                             <div class="input-group mb-3">
                                 <div class="custom-file">
-                                    <input type="file" class="custom-file-input" id="Anexos" name="Anexos" accept=".jpg,.png,.pdf,.doc,.docx" multiple />
+                                    <input type="file" class="custom-file-input" id="Anexos" name="Anexos" accept=".jpg,.jpeg,.png,.pdf,.doc,.docx" multiple />
                                     <label class="custom-file-label" for="Anexos">Escolher arquivo(s)</label>
                                 </div>
                             </div>
@@ -57,17 +57,32 @@
 
 @section Scripts{
     <script>
+        var storedFiles = [];
+
         $(document).ready(function () {
+            document.querySelector('#Anexos').addEventListener('change', getMultipleFiles, false);
+            document.querySelector('#formFiles').addEventListener('submit', handleForm, false);
 
-            $('input#Anexos').change(function () {
+            $('#Anexos').change(function () {
 
-                validarInputFile($(this));
+                inputFileIsValid($(this));
 
-                listFiles($(this));
+                showSelectedFiles($(this));
             });
-        });
+          
+        });      
 
-        function validarInputFile(input) {
+        function getMultipleFiles(e) {
+            var files = e.target.files;
+            var filesArr = Array.prototype.slice.call(files);
+
+            filesArr.forEach(function (f) {
+                storedFiles.push(f);
+            });
+
+        }
+
+        function inputFileIsValid(input) {
 
             var files = input[0].files;
             var tamanhoTotal = 0;
@@ -91,9 +106,9 @@
 
         }
 
-        function listFiles(input) {
+        function showSelectedFiles() {
 
-            var files = input[0].files;
+            var files = storedFiles;
             var lista = '';
 
             $('#lstFiles').html('');
@@ -120,11 +135,13 @@
                         return false;
                     }
 
-                    lista += '<dd><i class="' + icone + '" aria-hidden="true"></i> ' + files[i].name + '</dd>';
+                    var linkRemove = "<a href=\"javascript:removerItemLista(\'" + files[i].name + "'\);\" target=\"_self\" id=\"lnkRemove\" data-toggle=\"tooltip\" data-placement=\"right\" class=\"btn btn-load\" data-loading-text=\"<i class='fa fa-clock-o' aria-hidden='true'></i>\" title=\"Excluir\" data-original-title=\"Excluir\"><i class=\"fa fa-trash\" style='color:#ff0000'></i> </a>"
+
+                    lista += '<dd><i class="' + icone + '" aria-hidden="true"></i> ' + files[i].name + linkRemove + '</dd>';
 
                 }
 
-                var htmlList = '<dt>' + lista + '</dt>';
+                var htmlList = '<dl><dt>' + lista + '</dt></dl>';
 
                 $('#lstFiles').html(htmlList);
 
@@ -135,6 +152,38 @@
             }
         }
 
+        function handleForm(e) {
+            e.preventDefault();
+
+            var data = new FormData();
+
+            for (var i = 0; i < storedFiles.length; i++) {
+                data.append('Anexos', storedFiles[i]);	
+            }
+
+            var xhr = new XMLHttpRequest();
+            xhr.open('POST', $("#formFiles").attr('action'), true);
+
+            xhr.onload = function (e) {
+                if (this.status == 200) {
+                    console.log(e.currentTarget.responseText);
+                    alert(e.currentTarget.responseText + ' Enviado com sucesso.');
+                }
+            }
+
+            xhr.send(data);
+        }
+        function removerItemLista(item) {
+            storedFiles = $.grep(storedFiles, function (value) {
+
+                $('#Anexos').val('');
+                return value.name != item;
+
+            });
+
+            //depois de remover da lista faço a nova listagem
+            showSelectedFiles();
+        }
     </script>
 }
 
